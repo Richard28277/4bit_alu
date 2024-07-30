@@ -45,11 +45,11 @@ pinout:
   uio[0]: "opcode[0]" # LSB of opcode
   uio[1]: "opcode[1]" # Bit 1 of opcode
   uio[2]: "opcode[2]" # MSB of opcode
-  uio[3]: "carry_out" # Carry out
-  uio[4]: "overflow"  # Overflow
+  uio[3]: ""          # Unused
+  uio[4]: ""          # Unused
   uio[5]: ""          # Unused
-  uio[6]: ""          # Unused
-  uio[7]: ""          # Unused
+  uio[6]: "carry_out" # Carry out
+  uio[7]: "overflow"  # Overflow
 
 # Do not change!
 yaml_version: 6
