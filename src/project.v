@@ -59,40 +59,39 @@ module tt_um_Richard28277 (
         end else begin
             case (opcode)
                 ADD: begin
-                    result[3:0] = add_result[3:0]; // 4-bit result
-                    carry_out = add_result[4]; // Carry out
+                    result <= {4'b0000, add_result[3:0]}; // 4-bit result with upper 4 bits set to 0
+                    carry_out <= add_result[4]; // Carry out
                     // Overflow detection
-                    overflow = (a[3] & b[3] & ~add_result[3]) | (~a[3] & ~b[3] & add_result[3]);
+                    overflow <= (a[3] & b[3] & ~add_result[3]) | (~a[3] & ~b[3] & add_result[3]);
                 end
                 SUB: begin
-                    result[3:0] = sub_result[3:0]; // 4-bit result
-                    carry_out = ~sub_result[4]; // Borrow detection
+                    result <= {4'b0000, sub_result[3:0]}; // 4-bit result with upper 4 bits set to 0
+                    carry_out <= ~sub_result[4]; // Borrow detection
                     // Overflow detection
-                    overflow = (a[3] & ~b[3] & ~sub_result[3]) | (~a[3] & b[3] & sub_result[3]);
+                    overflow <= (a[3] & ~b[3] & ~sub_result[3]) | (~a[3] & b[3] & sub_result[3]);
                 end
                 MUL: begin
-                    result = mul_result; // 8-bit result
+                    result <= mul_result; // 8-bit result
                 end
                 DIV: begin
-                    result = {div_remainder, div_quotient}; // 8-bit result (remainder: lower 4 bits, quotient: upper 4 bits)
+                    result <= {div_remainder, div_quotient}; // 8-bit result (remainder: lower 4 bits, quotient: upper 4 bits)
                 end
                 AND: begin
-                    result = {4'b0000, and_result}; // 4-bit result with the upper 4 bits set to 0
+                    result <= {4'b0000, and_result}; // 4-bit result with upper 4 bits set to 0
                 end
                 OR: begin
-                    result = {4'b0000, or_result}; // 4-bit result with the upper 4 bits set to 0
+                    result <= {4'b0000, or_result}; // 4-bit result with upper 4 bits set to 0
                 end
                 XOR: begin
-                    result = {4'b0000, xor_result}; // 4-bit result with the upper 4 bits set to 0
+                    result <= {4'b0000, xor_result}; // 4-bit result with upper 4 bits set to 0
                 end
                 NOT: begin
-                    result = {4'b0000, not_result}; // 4-bit result with the upper 4 bits set to 0
+                    result <= {4'b0000, not_result}; // 4-bit result with upper 4 bits set to 0
                 end
-
                 default: begin
-                    result = 8'b00000000;
-                    carry_out = 0;
-                    overflow = 0;
+                    result <= 8'b00000000;
+                    carry_out <= 0;
+                    overflow <= 0;
                 end
             endcase
         end
