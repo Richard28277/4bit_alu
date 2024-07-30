@@ -77,17 +77,18 @@ module tt_um_Richard28277 (
                     result = {div_remainder, div_quotient}; // 8-bit result (remainder: lower 4 bits, quotient: upper 4 bits)
                 end
                 AND: begin
-                    result[3:0] = and_result; // 4-bit result
+                    result = {4'b0000, and_result}; // 4-bit result with the upper 4 bits set to 0
                 end
                 OR: begin
-                    result[3:0] = or_result; // 4-bit result
+                    result = {4'b0000, or_result}; // 4-bit result with the upper 4 bits set to 0
                 end
                 XOR: begin
-                    result[3:0] = xor_result; // 4-bit result
+                    result = {4'b0000, xor_result}; // 4-bit result with the upper 4 bits set to 0
                 end
                 NOT: begin
-                    result[3:0] = not_result; // 4-bit result
+                    result = {4'b0000, not_result}; // 4-bit result with the upper 4 bits set to 0
                 end
+
                 default: begin
                     result = 8'b00000000;
                     carry_out = 0;
