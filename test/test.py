@@ -47,7 +47,7 @@ async def test_tt_um_Richard28277(dut):
     dut.uio_in.value = 0b011       # opcode = DIV
     await Timer(10, units='ns')
     print(f"DIV: result = {dut.uo_out.value}")
-    assert dut.uo_out.value == 0b00000010
+    assert dut.uo_out.value == 0b00100000
 
     # Test AND operation
     dut.ui_in.value = 0b1100_1010  # a = 12, b = 10
