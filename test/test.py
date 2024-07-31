@@ -27,7 +27,7 @@ async def test_project(dut):
 
     # Set the input values you want to test
     dut.ui_in.value = 0b00010010
-    dut.uio_in.value = 0b00000000
+    dut.uio_in.value = 0b00000001
 
     # Wait for one clock cycle to see the output values
     await ClockCycles(dut.clk, 1)
