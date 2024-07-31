@@ -30,31 +30,31 @@ async def test_project(dut):
         dut.uio_in.value = opcode
         await ClockCycles(dut.clk, 1)
         assert dut.uo_out.value == expected_result, f"Expected result: {expected_result}, got: {dut.uo_out.value}"
-        assert dut.uio_out.value & 0x80 == (expected_overflow << 7), f"Expected overflow: {expected_overflow}, got: {dut.uio_out.value & 0x80}"
-        assert dut.uio_out.value & 0x40 == (expected_carry << 6), f"Expected carry: {expected_carry}, got: {dut.uio_out.value & 0x40}"
+        assert (dut.uio_out.value >> 7) & 1 == expected_overflow, f"Expected overflow: {expected_overflow}, got: {(dut.uio_out.value >> 7) & 1}"
+        assert (dut.uio_out.value >> 6) & 1 == expected_carry, f"Expected carry: {expected_carry}, got: {(dut.uio_out.value >> 6) & 1}"
 
     # Testing ADD operation
-    await perform_test(a=5, b=10, opcode=0b000, expected_result=15, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b000, expected_result=0b00001000, expected_carry=0, expected_overflow=1)
 
     # Testing SUB operation
-    await perform_test(a=15, b=5, opcode=0b001, expected_result=10, expected_carry=1, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b001, expected_result=0b00001110, expected_carry=0, expected_overflow=0)
 
     # Testing MUL operation
-    await perform_test(a=2, b=3, opcode=0b010, expected_result=6, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b010, expected_result=0b00001111, expected_carry=0, expected_overflow=0)
 
     # Testing DIV operation (quotient 2, remainder 1)
-    await perform_test(a=9, b=4, opcode=0b011, expected_result=(1 << 4) | 2, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b011, expected_result=0b00110000, expected_carry=0, expected_overflow=0)
 
     # Testing AND operation
-    await perform_test(a=6, b=3, opcode=0b100, expected_result=0b00000010, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b100, expected_result=0b00000001, expected_carry=0, expected_overflow=0)
 
     # Testing OR operation
-    await perform_test(a=6, b=3, opcode=0b101, expected_result=0b00000111, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b101, expected_result=0b00000111, expected_carry=0, expected_overflow=0)
 
     # Testing XOR operation
-    await perform_test(a=6, b=3, opcode=0b110, expected_result=0b00000101, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b110, expected_result=0b00000110, expected_carry=0, expected_overflow=0)
 
     # Testing NOT operation (unary operation, only uses 'a')
-    await perform_test(a=6, b=0, opcode=0b111, expected_result=0b00001001, expected_carry=0, expected_overflow=0)
+    await perform_test(a=0b0011, b=0b0101, opcode=0b111, expected_result=0b00001100, expected_carry=0, expected_overflow=0)
 
     dut._log.info("All tests passed")
