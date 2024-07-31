@@ -33,39 +33,46 @@ async def test_tt_um_Richard28277(dut):
     dut.uio_in.value = 0b001       # opcode = SUB
     await Timer(10, units='ns')
     display_result("SUB")
+    assert dut.uo_out.value == 0b00000001
 
     # Test MUL operation
     dut.ui_in.value = 0b0010_0011  # a = 2, b = 3
     dut.uio_in.value = 0b010       # opcode = MUL
     await Timer(10, units='ns')
     print(f"MUL: result = {dut.uo_out.value}")
+    assert dut.uo_out.value == 0b00000110
 
     # Test DIV operation
     dut.ui_in.value = 0b0100_0010  # a = 4, b = 2
     dut.uio_in.value = 0b011       # opcode = DIV
     await Timer(10, units='ns')
     print(f"DIV: result = {dut.uo_out.value}")
+    assert dut.uo_out.value == 0b00000010
 
     # Test AND operation
     dut.ui_in.value = 0b1100_1010  # a = 12, b = 10
     dut.uio_in.value = 0b100       # opcode = AND
     await Timer(10, units='ns')
     print(f"AND: result = {dut.uo_out.value}")
+    assert dut.uo_out.value == 0b00001000
 
     # Test OR operation
     dut.ui_in.value = 0b1100_1010  # a = 12, b = 10
     dut.uio_in.value = 0b101       # opcode = OR
     await Timer(10, units='ns')
     print(f"OR: result = {dut.uo_out.value}")
+    assert dut.uo_out.value == 0b00001110
 
     # Test XOR operation
     dut.ui_in.value = 0b1100_1010  # a = 12, b = 10
     dut.uio_in.value = 0b110       # opcode = XOR
     await Timer(10, units='ns')
     print(f"XOR: result = {dut.uo_out.value}")
+    assert dut.uo_out.value == 0b00000110
 
     # Test NOT operation
     dut.ui_in.value = 0b1100_1010  # a = 12, b = ignored
     dut.uio_in.value = 0b111       # opcode = NOT
     await Timer(10, units='ns')
     print(f"NOT: result = {dut.uo_out.value}")
+    assert dut.uo_out.value == 0b00000011
