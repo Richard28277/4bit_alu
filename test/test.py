@@ -31,8 +31,9 @@ async def test_tt_um_Richard28277(dut):
     # Test ADD operation
     dut.ui_in.value = 0b0011_0101  # a = 53, b = 2
     dut.uio_in.value = 0b000       # opcode = ADD
-    await check_result("ADD", 0b0011_0110)  # 53 + 2 = 55 (binary 0011 0110)
     print(f"ADD - ui_in: {dut.ui_in.value}, uio_in: {dut.uio_in.value}, uo_out: {dut.uo_out.value}")
+    await check_result("ADD", 0b0011_0110)  # 53 + 2 = 55 (binary 0011 0110)
+    
 
     # Test SUB operation
     dut.ui_in.value = 0b0010_0001  # a = 33, b = 1
