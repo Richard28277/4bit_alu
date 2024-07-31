@@ -26,7 +26,7 @@ async def test_tt_um_Richard28277(dut):
     dut.uio_in.value = 0b000       # opcode = ADD
     await Timer(10, units='ns')
     display_result("ADD")
-    assert dut.uo_out.value == 00001000
+    assert dut.uo_out.value == 0b00001000
 
     # Test SUB operation
     dut.ui_in.value = 0b0010_0001  # a = 2, b = 1
