@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
-# SPDX-License-Identifier: Apache-2.0
-
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
@@ -22,39 +19,27 @@ async def test_project(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
 
-    dut._log.info("Test project behavior")
+    test_cases = [
+        {'ui_in': 0b00110101, 'uio_in': 0b00000000, 'expected_uo_out': 0b00001000, 'expected_overflow': 1, 'expected_carry_out': 0}, # ADD
+        {'ui_in': 0b00110101, 'uio_in': 0b00000001, 'expected_uo_out': 0b00001110, 'expected_overflow': 0, 'expected_carry_out': 0}, # SUB
+        {'ui_in': 0b00110101, 'uio_in': 0b00000010, 'expected_uo_out': 0b00001111, 'expected_overflow': 0, 'expected_carry_out': 0}, # MUL
+        {'ui_in': 0b00110101, 'uio_in': 0b00000011, 'expected_uo_out': 0b00110000, 'expected_overflow': 0, 'expected_carry_out': 0}, # DIV
+        {'ui_in': 0b00110101, 'uio_in': 0b00000100, 'expected_uo_out': 0b00000001, 'expected_overflow': 0, 'expected_carry_out': 0}, # AND
+        {'ui_in': 0b00110101, 'uio_in': 0b00000101, 'expected_uo_out': 0b00000111, 'expected_overflow': 0, 'expected_carry_out': 0}, # OR
+        {'ui_in': 0b00110101, 'uio_in': 0b00000110, 'expected_uo_out': 0b00000110, 'expected_overflow': 0, 'expected_carry_out': 0}, # XOR
+        {'ui_in': 0b00110101, 'uio_in': 0b00000111, 'expected_uo_out': 0b00001100, 'expected_overflow': 0, 'expected_carry_out': 0}  # NOT
+    ]
 
-    # Helper function to perform a test
-    async def perform_test(a, b, opcode, expected_result, expected_carry, expected_overflow):
-        dut.ui_in.value = (a << 4) | b
-        dut.uio_in.value = opcode
+    for case in test_cases:
+        dut.ui_in.value = case['ui_in']
+        dut.uio_in.value = case['uio_in']
+
+        # Wait for one clock cycle to see the output values
         await ClockCycles(dut.clk, 1)
-        assert dut.uo_out.value == expected_result, f"Expected result: {expected_result}, got: {dut.uo_out.value}"
-        assert (dut.uio_out.value >> 7) & 1 == expected_overflow, f"Expected overflow: {expected_overflow}, got: {(dut.uio_out.value >> 7) & 1}"
-        assert (dut.uio_out.value >> 6) & 1 == expected_carry, f"Expected carry: {expected_carry}, got: {(dut.uio_out.value >> 6) & 1}"
 
-    # Testing ADD operation
-    await perform_test(a=0b0011, b=0b0101, opcode=0b000, expected_result=0b00001000, expected_carry=0, expected_overflow=1)
-
-    # Testing SUB operation
-    await perform_test(a=0b0011, b=0b0101, opcode=0b001, expected_result=0b00001110, expected_carry=0, expected_overflow=0)
-
-    # Testing MUL operation
-    await perform_test(a=0b0011, b=0b0101, opcode=0b010, expected_result=0b00001111, expected_carry=0, expected_overflow=0)
-
-    # Testing DIV operation (quotient 2, remainder 1)
-    await perform_test(a=0b0011, b=0b0101, opcode=0b011, expected_result=0b00110000, expected_carry=0, expected_overflow=0)
-
-    # Testing AND operation
-    await perform_test(a=0b0011, b=0b0101, opcode=0b100, expected_result=0b00000001, expected_carry=0, expected_overflow=0)
-
-    # Testing OR operation
-    await perform_test(a=0b0011, b=0b0101, opcode=0b101, expected_result=0b00000111, expected_carry=0, expected_overflow=0)
-
-    # Testing XOR operation
-    await perform_test(a=0b0011, b=0b0101, opcode=0b110, expected_result=0b00000110, expected_carry=0, expected_overflow=0)
-
-    # Testing NOT operation (unary operation, only uses 'a')
-    await perform_test(a=0b0011, b=0b0101, opcode=0b111, expected_result=0b00001100, expected_carry=0, expected_overflow=0)
+        # Check the output values
+        assert dut.uo_out.value == case['expected_uo_out'], f"Test failed for uio_in={case['uio_in']}: expected {case['expected_uo_out']} but got {dut.uo_out.value}"
+        assert dut.uio_out[7].value == case['expected_overflow'], f"Test failed for uio_in={case['uio_in']}: expected overflow {case['expected_overflow']} but got {dut.uio_out[7].value}"
+        assert dut.uio_out[6].value == case['expected_carry_out'], f"Test failed for uio_in={case['uio_in']}: expected carry_out {case['expected_carry_out']} but got {dut.uio_out[6].value}"
 
     dut._log.info("All tests passed")
