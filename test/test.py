@@ -19,10 +19,14 @@ async def test_tt_um_Richard28277(dut):
 
     # Helper function to check results
     async def check_result(op_name, expected_value):
-        await Timer(10, units='ns')
+        await RisingEdge(dut.clk)
         actual_value = dut.uo_out.value
-        if actual_value != expected_value:
-            raise AssertionError(f"{op_name}: Expected result = {expected_value:04b}, but got {actual_value:04b}")
+        # Convert expected_value and actual_value to binary strings for comparison
+        expected_bin = f"{expected_value:04b}"
+        actual_bin = actual_value.binstr.zfill(4)  # Ensure 4-bit width
+        print(f"{op_name} - Expected: {expected_bin}, Actual: {actual_bin}")
+        if actual_bin != expected_bin:
+            raise AssertionError(f"{op_name}: Expected result = {expected_bin}, but got {actual_bin}")
 
     # Test ADD operation
     dut.ui_in.value = 0b0011_0101  # a = 53, b = 2
