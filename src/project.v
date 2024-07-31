@@ -12,22 +12,28 @@ module tt_um_Richard28277 (
 );
 
     // Operation encoding
-    parameter ADD = 3'b000;
-    parameter SUB = 3'b001;
-    parameter MUL = 3'b010;
-    parameter DIV = 3'b011;
-    parameter AND = 3'b100; // Logical AND
-    parameter OR  = 3'b101; // Logical OR
-    parameter XOR = 3'b110; // Logical XOR
-    parameter NOT = 3'b111; // Logical NOT (Unary operation)
+    parameter ADD = 4'b0000;
+    parameter SUB = 4'b0001;
+    parameter MUL = 4'b0010;
+    parameter DIV = 4'b0011;
+    parameter AND = 4'b0100; // Logical AND
+    parameter OR  = 4'b0101; // Logical OR
+    parameter XOR = 4'b0110; // Logical XOR
+    parameter NOT = 4'b0111; // Logical NOT (Unary operation)
+    parameter ENC = 4'b1000; // Encryption operation
 
     // Internal signals
-    wire [3:0] a = ui_in[7:4];         // Input a (high 4 bits of ui_in)
-    wire [3:0] b = ui_in[3:0];         // Input b (low 4 bits of ui_in)
-    wire [2:0] opcode = uio_in[2:0];   // Opcode (lower 3 bits of uio_in)
-    wire [4:0] add_result;             // 5 bits to capture carry/overflow
-    wire [4:0] sub_result;             // 5 bits to capture borrow
-    wire [7:0] mul_result;             // 8 bits for multiplication
+    wire [3:0] a = ui_in[7:4];   // Input a (high 4 bits of ui_in)
+    wire [3:0] b = ui_in[3:0];   // Input b (low 4 bits of ui_in)
+    wire [3:0] opcode = uio_in[3:0]; // Opcode (lower 4 bits of uio_in)
+
+    // Encryption parameters
+    parameter [7:0] ENCRYPTION_KEY = 8'hAB;
+
+    // Internal signals for operations
+    wire [4:0] add_result;          // 5 bits to capture carry/overflow
+    wire [4:0] sub_result;          // 5 bits to capture borrow
+    wire [7:0] mul_result;          // 8 bits for multiplication
     wire [3:0] div_quotient;
     wire [3:0] div_remainder;
     wire [3:0] and_result = a & b;
@@ -87,6 +93,10 @@ module tt_um_Richard28277 (
                 end
                 NOT: begin
                     result <= {4'b0000, not_result}; // 4-bit result with upper 4 bits set to 0
+                end
+                ENC: begin
+                    // Apply encryption to the concatenated input (a and b)
+                    result <= (a << 4 | b) ^ ENCRYPTION_KEY; // Concatenate a and b, then XOR with the full 8-bit key
                 end
                 default: begin
                     result <= 8'b00000000;
