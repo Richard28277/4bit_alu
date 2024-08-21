@@ -24,8 +24,8 @@ The module accepts two 4-bit binary numbers, `a` and `b`, and a 4-bit operation 
 - **ENC**: Encrypts the inputs `a` and `b` using an 8-bit key derived from concatenating `a` and `b` (treated as an 8-bit value). The encryption function applies an XOR operation between this 8-bit concatenated value and a fixed 8-bit key (`KEY`). The result is an 8-bit encrypted value.
 
   **Encryption Details**:
-  - **Key Generation**: The key for the encryption function is a fixed 8-bit value (e.g., `0xAB` or `10101011` in binary).
-  - **Encryption Operation**: The concatenated value of `a` and `b` (forming an 8-bit value) is XORed with the fixed 8-bit key. The resulting 8-bit value is output as the encrypted result.
+  - **Key Generation**: The key for the encryption function is a fixed 8-bit value.
+  - **Encryption Operation**: The concatenated value of `a` and `b` (forming an 8-bit value) is XORed with the fixed 8-bit key.
 
 ## How to Test
 
@@ -47,10 +47,3 @@ To test the `4-Bit ALU` module, follow these steps:
 4. **Operation Testing**:
    - Cycle through various `opcode` values and corresponding `a` and `b` inputs to verify the correct operation of the module.
    - For encryption, ensure `a` and `b` are combined and XORed with the fixed key. Verify that the result matches expected encrypted values.
-
-## External Hardware
-
-No external hardware is required for the basic operation of the `4-Bit ALU` module. However, for testing and observation purposes, you may need:
-
-- An 8-bit display or register to observe the `uo_out` output.
-- Logic analyzers or oscilloscopes to monitor the `clk`, `rst_n`, and status signals.
