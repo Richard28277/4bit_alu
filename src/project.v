@@ -23,9 +23,9 @@ module tt_um_Richard28277 (
     parameter ENC = 4'b1000; // Encryption operation
 
     // Internal signals
-    wire [3:0] a = ui_in[7:4];   // Input a (high 4 bits of ui_in)
-    wire [3:0] b = ui_in[3:0];   // Input b (low 4 bits of ui_in)
-    wire [3:0] opcode = uio_in[3:0]; // Opcode (lower 4 bits of uio_in)
+    wire [3:0] a = ui_in[7:4];   // Input a 
+    wire [3:0] b = ui_in[3:0];   // Input b 
+    wire [3:0] opcode = uio_in[3:0]; // Opcode
 
     // Encryption parameters
     parameter [7:0] ENCRYPTION_KEY = 8'hAB;
@@ -53,7 +53,7 @@ module tt_um_Richard28277 (
     // Multiplication
     assign mul_result = a * b;
 
-    // Division (handle division by zero)
+    // Division
     assign div_quotient = (b != 0) ? a / b : 4'b0000;
     assign div_remainder = (b != 0) ? a % b : 4'b0000;
 
@@ -72,7 +72,7 @@ module tt_um_Richard28277 (
                 end
                 SUB: begin
                     result <= {4'b0000, sub_result[3:0]}; // 4-bit result with upper 4 bits set to 0
-                    carry_out <= ~sub_result[4]; // Borrow detection
+                    carry_out <= ~sub_result[4]; 
                     // Overflow detection
                     overflow <= (a[3] & ~b[3] & ~sub_result[3]) | (~a[3] & b[3] & sub_result[3]);
                 end
@@ -96,7 +96,7 @@ module tt_um_Richard28277 (
                 end
                 ENC: begin
                     // Apply encryption to the concatenated input (a and b)
-                    result <= (a << 4 | b) ^ ENCRYPTION_KEY; // Concatenate a and b, then XOR with the full 8-bit key
+                    result <= (a << 4 | b) ^ ENCRYPTION_KEY;
                 end
                 default: begin
                     result <= 8'b00000000;
@@ -109,26 +109,25 @@ module tt_um_Richard28277 (
 
     // Assign outputs
     assign uo_out  = result;
-    assign uio_out[7] = overflow;   // Assign overflow to the most significant bit
-    assign uio_out[6] = carry_out;  // Assign carry_out to the next bit
-    assign uio_out[5] = 1'b0;       // Drive unused bits to 0
-    assign uio_out[4] = 1'b0;       // Drive unused bits to 0
-    assign uio_out[3] = 1'b0;       // Drive unused bits to 0
-    assign uio_out[2] = 1'b0;       // Drive unused bits to 0
-    assign uio_out[1] = 1'b0;       // Drive unused bits to 0
-    assign uio_out[0] = 1'b0;       // Drive unused bits to 0
+    assign uio_out[7] = overflow; 
+    assign uio_out[6] = carry_out;  
+    assign uio_out[5] = 1'b0; 
+    assign uio_out[4] = 1'b0; 
+    assign uio_out[3] = 1'b0;   
+    assign uio_out[2] = 1'b0;     
+    assign uio_out[1] = 1'b0;     
+    assign uio_out[0] = 1'b0;    
 
     // IO Enable Path
-    assign uio_oe[7] = 1'b1; // Enable output for bit 7
-    assign uio_oe[6] = 1'b1; // Enable output for bit 6
-    assign uio_oe[5] = 1'b0; // Keep input for bit 5
-    assign uio_oe[4] = 1'b0; // Keep input for bit 4
-    assign uio_oe[3] = 1'b0; // Keep input for bit 3
-    assign uio_oe[2] = 1'b0; // Keep input for bit 2
-    assign uio_oe[1] = 1'b0; // Keep input for bit 1
-    assign uio_oe[0] = 1'b0; // Keep input for bit 0
+    assign uio_oe[7] = 1'b1; 
+    assign uio_oe[6] = 1'b1;
+    assign uio_oe[5] = 1'b0; 
+    assign uio_oe[4] = 1'b0; 
+    assign uio_oe[3] = 1'b0; 
+    assign uio_oe[2] = 1'b0; 
+    assign uio_oe[1] = 1'b0; 
+    assign uio_oe[0] = 1'b0;
 
-    // List all unused inputs to prevent warnings
     wire _unused = &{ena, clk, rst_n, 1'b0};
 
 endmodule
