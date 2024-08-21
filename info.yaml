@@ -32,24 +32,24 @@ pinout:
   ui[7]: "b[3]"
 
   # Outputs
-  uo[0]: "result[0]" # Bit 0 of ALU result
-  uo[1]: "result[1]" # Bit 1 of ALU result
-  uo[2]: "result[2]" # Bit 2 of ALU result
-  uo[3]: "result[3]" # Bit 3 of ALU result
-  uo[4]: "result[4]" # Bit 4 of ALU result
-  uo[5]: "result[5]" # Bit 5 of ALU result
-  uo[6]: "result[6]" # Bit 6 of ALU result
-  uo[7]: "result[7]" # Bit 7 of ALU result
+  uo[0]: "result[0]"
+  uo[1]: "result[1]" 
+  uo[2]: "result[2]"
+  uo[3]: "result[3]"
+  uo[4]: "result[4]"
+  uo[5]: "result[5]"
+  uo[6]: "result[6]"
+  uo[7]: "result[7]"
 
   # Bidirectional pins
-  uio[0]: "opcode[0]" # LSB of opcode
-  uio[1]: "opcode[1]" # Bit 1 of opcode
-  uio[2]: "opcode[2]" # MSB of opcode
-  uio[3]: "opcode[3]"         # Unused
-  uio[4]: ""          # Unused
-  uio[5]: ""          # Unused
-  uio[6]: "carry_out" # Carry out
-  uio[7]: "overflow"  # Overflow
+  uio[0]: "opcode[0]"
+  uio[1]: "opcode[1]"
+  uio[2]: "opcode[2]"
+  uio[3]: "opcode[3]"
+  uio[4]: ""
+  uio[5]: ""
+  uio[6]: "carry_out"
+  uio[7]: "overflow"
 
 # Do not change!
 yaml_version: 6
