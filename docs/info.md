@@ -18,20 +18,8 @@ The module accepts two 4-bit binary numbers, `a` and `b`, and a 4-bit operation 
 - **OR**: Performs a logical OR operation on `a` and `b`.
 - **XOR**: Performs a logical XOR operation on `a` and `b`.
 - **NOT**: Performs a logical NOT operation on `a`, with `b` being ignored.
-- **ENC**: Encrypts the inputs `a` and `b` using an 8-bit key derived from concatenating `a` and `b` (treated as an 8-bit value). The encryption function applies an XOR operation between this 8-bit concatenated value and a fixed 8-bit key (`KEY`). The result is an 8-bit encrypted value.
-
-  **Encryption Details**:
-  - **Key Generation**: The key for the encryption function is a fixed 8-bit value.
-  - **Encryption Operation**: The concatenated value of `a` and `b` (forming an 8-bit value) is XORed with the fixed 8-bit key.
+- **ENC**: Encrypts the inputs `a` and `b` using an 8-bit key derived from concatenating `a` and `b`. The encryption function applies an XOR operation between this 8-bit concatenated value and a fixed 8-bit key. The result is an 8-bit encrypted value.
 
 ## How to Test
 
-To test the `4-Bit ALU` module, follow these steps:
-
-1. **Connect Inputs**:
-   - Connect the `ui_in` wire to the 4-bit inputs `a` and `b`.
-   - Connect the `uio_in` wire to the 4-bit `opcode`.
-
-2. **Connect Outputs**:
-   - Connect the `uo_out` wire to an 8-bit output display or register to observe the operation result.
-   - Connect the `uio_out` wire to observe the carry out and overflow status.
+To test this 4-bit ALU chip, set the values for a and b based on the 4-bit binary values for each, as well as the 4-bit operation code. The output can be up to 8-bits, using the uo pins along with the first 4 bidirectional pins. The uio pin 6 is used for the carry out, and the uio 7 is used for the overflow. 
